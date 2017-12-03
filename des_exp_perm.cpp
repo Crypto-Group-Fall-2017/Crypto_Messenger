@@ -1,4 +1,4 @@
-// Header file for DES Expansion Permutation
+// Implementation file for DES Expansion Permutation
 
 #include <unordered_map>
 #include <iostream>
