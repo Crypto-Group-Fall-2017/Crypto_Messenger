@@ -1,10 +1,5 @@
-/*****
- Agustin Malo
- Crypto Fall 17
- Nemo
- Ex 2
- btrans.cpp
- *****/
+// Header file for DES Expansion Permutation
+
 #include <unordered_map>
 #include <iostream>
 #include <string>
