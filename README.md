@@ -31,8 +31,8 @@ Encryption Resources:
 https://en.wikipedia.org/wiki/Public-key_cryptography
 https://en.wikipedia.org/wiki/End-to-end_encryption
 
-Java DES Encryption:
-https://www.mkyong.com/java/jce-encryption-data-encryption-standard-des-tutorial/
+DES in C:
+http://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm
 
 Python Chat Client:
 https://github.com/keyan/python-socket-chat
