@@ -1,10 +1,30 @@
+
+#include <unordered_map>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <stack>
+#include <exception>
+#include <vector>
+#include <fstream>
+
 #include "stdio.h"
+
 using namespace std;
 
 #define DEBUG 0
 
-void des_key_mangler(int sessionKey[64], int roundKeys[16][48])
+int** des_key_mangler(int sessionKey[64])
 {
+    int** array2D = 0;
+    array2D = new int*[16];
+
+    for (int h = 0; h < 16; h++)
+    {
+        array2D[h] = new int[48];
+    }
+
     //This is permutation for the 56-bit key
     const int PC1[56] = {
         57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35, 27, 19, 11, 3, 60, 52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38, 30, 22, 14, 6, 61, 53, 45, 37, 29, 21, 13, 5, 28, 20, 12, 4};
@@ -24,7 +44,7 @@ void des_key_mangler(int sessionKey[64], int roundKeys[16][48])
     int temp;
 
     //separates the session key into a 56-bit array via the PC1 array
-    for (i; i < 56; i++)
+    for (i = 0; i < 56; i++)
     {
         sessionKey56[i] = sessionKey[PC1[i]];
         if (DEBUG)
@@ -36,7 +56,7 @@ void des_key_mangler(int sessionKey[64], int roundKeys[16][48])
     if (DEBUG)
     {
         printf("\n56-bit, permutated session key at START:\n");
-        for (i; i < 56; i++)
+        for (i = 0; i < 56; i++)
         {
             if (DEBUG)
             {
@@ -115,8 +135,8 @@ void des_key_mangler(int sessionKey[64], int roundKeys[16][48])
     {
         for (j = 0; j < 24; j++)
         {
-            roundKeys[i][j] = leftHalf[i][PC2[j]];
-            roundKeys[i][j + 24] = rightHalf[i][PC2[j + 24]];
+            array2D[i][j] = leftHalf[i][PC2[j]];
+            array2D[i][j + 24] = rightHalf[i][PC2[j + 24]];
         }
     }
     //Debugging for round keys
@@ -127,10 +147,13 @@ void des_key_mangler(int sessionKey[64], int roundKeys[16][48])
             printf("\nRound Key %d:\n", i);
             for (int j = 0; j < 48; j++)
             {
-                printf("%d ", roundKeys[i][j]);
+                printf("%d ", array2D[i][j]);
             }
             printf("\n");
         }
     }
-    return;
+    // array2D = roundKeys;
+
+
+    return array2D;
 }

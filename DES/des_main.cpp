@@ -12,6 +12,9 @@
 
 #include "des_exp_perm.h"
 #include "p_box.h"
+#include "S_Box.h"
+#include "des_key_mangler.h"
+
 
 using namespace std;
 
@@ -25,7 +28,7 @@ int* xor_helper(int one[], int two[], int size){
     return result;
 }
 
-int* des_encrypt_one_round(int inputArray[64], int keyArray[48]){
+int* des_encrypt_one_round(int inputArray[64], int mangledKey[48]){
     int *result = new int[64];
 
     //Split to two halves
@@ -40,17 +43,16 @@ int* des_encrypt_one_round(int inputArray[64], int keyArray[48]){
     //Take right half and do DES expansion
     int* expansion = des_exp_perm(right);
 
-    //Mangle session key
-    int *mangler = new int[48]; // ( --> placeholder until implemented  <-- )
-
     //Take DES expansion result and xor with mangler output
-    int *xor48 = xor_helper(expansion,mangler,48);
+    int *xor48 = xor_helper(expansion,mangledKey,48);
 
     //Take XOR'd result and pass through S-box
+    S_box *sboxObj = new S_box();
+    int *sbox32 = sboxObj->s_box(xor48);
         /* insert sbox function here! */
 
     //Take S-box result and pass through P-box
-    int *pbox32 = p_box(xor48);
+    int *pbox32 = p_box(sbox32);
 
     //XOR left half and P-box output
     pbox32 = xor_helper(left, pbox32, 32);
@@ -71,9 +73,11 @@ int* des_encrypt_one_round(int inputArray[64], int keyArray[48]){
 
 int* des_encrypt(int inputArray[64], int keyArray[48]){
 
+    int** mangledKeys = des_key_mangler(keyArray);
+
     // Mangle key array and put in 2-D array of round keys (size 48)
     for(int i = 0; i < 16; i++){
-        inputArray = des_encrypt_one_round(inputArray,keyArray);
+        inputArray = des_encrypt_one_round(inputArray,mangledKeys[i]);
     }
 
     return inputArray;
