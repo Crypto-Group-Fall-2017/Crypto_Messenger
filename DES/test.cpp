@@ -57,14 +57,41 @@ int main(int argc, char const *argv[]) {
     string identifier = "helphelp";
     string plainText = "private.";
 
-    string encryptedCode = BinToAc(des_encrypt(stringToBinary(identifier),stringToBinary(key)));
-    cout << encryptedCode << endl;
+    ifstream inFile;
+    inFile.open("file.txt");
+    if (!inFile) {
+        cerr << "Unable to open file datafile.txt";
+        exit(1);   // call system to stop
+    }
 
-    string xorResult = xor8(plainText,encryptedCode);
-    cout << xorResult << endl;
+    string input;
+    string input2;
+    while(!inFile.eof()){
+        inFile >> input;
+        input2 += input + " ";
+    }
+
+    inFile.close();
+
+    input2.resize(input2.length()-1);
+
+    string encryptedCode = BinToAc(des_encrypt(stringToBinary(identifier),stringToBinary(key)));
+    // cout << encryptedCode << endl;
+
+    string xorResult = xor8(input2,encryptedCode);
+    // cout << xorResult << endl;
 
     string getMessageBack = xor8(xorResult, encryptedCode);
-    cout << getMessageBack << endl;
+    // cout << getMessageBack << endl;
+
+    //write to file:
+    xorResult += "\n";
+
+    ofstream myfile;
+    myfile.open ("file.txt");
+    myfile << xorResult;
+    myfile.close();
+
 
     return 0; //No error.
 }

@@ -8,7 +8,7 @@ CCFLAGS  = -g -Wall
 CPFLAGS = -std=gnu++11
 all: test
 
-test: des_key_mangler.o des_exp_perm.o p_box.o test.o des_main.o 
+test: des_key_mangler.o des_exp_perm.o p_box.o test.o des_main.o
 	$(CC) $(CFLAGS) $(CPFLAGS) -o test des_key_mangler.o test.o des_exp_perm.o p_box.o des_main.o
 
 test.o: test.cpp
@@ -27,4 +27,4 @@ des_exp_perm.o: des_exp_perm.cpp des_exp_perm.h
 	$(CC) $(CFLAGS) $(CPFLAGS) -c des_exp_perm.cpp
 
 clean:
-	$(RM) test *.o *~
+	$(RM) test *.o
