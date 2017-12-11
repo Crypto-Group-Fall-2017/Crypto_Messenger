@@ -8,6 +8,19 @@ def prompt():
     sys.stdout.write('<You> ')
     sys.stdout.flush()
 
+def pass_through_des(input):
+    F = open('file.txt', 'w').close()
+    F = open('file.txt', 'w')
+    F.write(input)
+    F.close()
+    tmp=subprocess.call("./test")
+    time.sleep(.3)
+    F = open('file.txt', 'r')
+    input=F.read()
+    F.close()
+    return input
+
+
 if __name__ == "__main__":
 
     if(len(sys.argv) < 3):
@@ -42,32 +55,17 @@ if __name__ == "__main__":
                     print '\nConnection error'
                     sys.exit()
                 else:
+                    if data[0] == '[':
+                        sys.stdout.write((data))
+                    else:
+                        index = data.find('>')
+                        index += 1
+                        data = data[index:]
+                        sys.stdout.write(pass_through_des(data))
 
-                    F = open('file.txt', 'w').close()
-                    F = open('file.txt', 'w')
-                    F.write(data)
-                    F.close()
-                    tmp=subprocess.call("./test")
-                    time.sleep(.3)
-                    F = open('file.txt', 'r')
-                    data=F.read()
-                    F.close()
-
-                    sys.stdout.write(data)
                     prompt()
 
             else:
                 msg = sys.stdin.readline()
-                # transfer to C-code
-                F = open('file.txt', 'w').close()
-                F = open('file.txt', 'w')
-                F.write(msg)
-                F.close()
-                tmp=subprocess.call("./test")
-                time.sleep(.3)
-                F = open('file.txt', 'r')
-                msg=F.read()
-                F.close()
-
-                s.send(msg)
+                s.send(pass_through_des(msg))
                 prompt()
