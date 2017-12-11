@@ -71,7 +71,7 @@ int* des_encrypt_one_round(int inputArray[64], int mangledKey[48]){
 }
 
 
-int* des_encrypt(int inputArray[64], int keyArray[48]){
+int* des_encrypt(int inputArray[64], int keyArray[64]){
 
     int** mangledKeys = des_key_mangler(keyArray);
 

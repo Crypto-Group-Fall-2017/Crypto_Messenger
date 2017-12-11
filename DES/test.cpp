@@ -14,92 +14,57 @@
 
 using namespace std;
 
-// char* convertToString(int array[64]){
-//     char* arr = new char[8];
-//     for (int i = 0; i < 8; i++) {
-//         int result = 0;
-//         for (int j = 7; j >= 0; j--) {
-//             result |=  (array[(i*8)+j]) << (7-j);
-//         }
-//         arr[i] = (char) (result );
-//     }
-//     return arr;
-// }
+string BinToAc(int array[64]){
+    string output;
+    int result = 0;
+    for(int j = 0; j < 8; j++){
+        for(int i = 0; i < 8; i++){
+            result = result + (array[i + (8*j)] << (7-i));
+        }
+        output.push_back((char)result);
+        result = 0;
+    }
+    return output;
+}
 
-// void xorWithCode(int code[], char *str){
-//
-//
-// }
+string xor8(string one, string two){
+    string output;
+    for(int i = 0 ; i < 8; i++){
+        output.push_back((uint8_t )one[i] ^ (uint8_t)two[i]);
+        //cout << (( (uint8_t) one[i] )^( (uint8_t) two[i] )) << " ";
+        //std::cout<<std::bitset<8>((( (uint8_t) one[i] )^( (uint8_t) two[i] )))<<std::endl;
+    }
+    // cout << endl;
+    return output;
+}
 
+int* stringToBinary(string input){
+    int length = input.length();
+    int *arr = new int[length*8];
+    for (int i = 0; i < length; i++) {
+        uint8_t ascii8bits = (uint8_t) input[i];
+        for(int j = 0; j < 8 ; j++){
+            arr[(i*8)+j] = (ascii8bits >> (7-j)) & 1;
+        }
+    }
+    return arr;
+}
 
 
 int main(int argc, char const *argv[]) {
 
-    //Testing p_box
-    int input1[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+    string key = "estoniar";
+    string identifier = "helphelp";
+    string plainText = "private.";
 
-    int* arr = p_box(input1);
+    string encryptedCode = BinToAc(des_encrypt(stringToBinary(identifier),stringToBinary(key)));
+    cout << encryptedCode << endl;
 
-    // for(int i = 0; i < 32; i++){
-    //     cout << arr[i] << " ";
-    // }
-    // cout << endl << endl;
+    string xorResult = xor8(plainText,encryptedCode);
+    cout << xorResult << endl;
 
-
-
-    //Testing des_expansion
-    arr = des_exp_perm(input1);
-
-    // for(int i = 0; i < 48; i++){
-    //     cout << arr[i] << " ";
-    // }
-    // cout << endl << endl;
-
-
-
-    // EX: IP ADDRESS 130.5.5.25
-    int identifier[] = {1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,1};
-    int private_key[] = {0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1};
-
-    arr = des_encrypt(identifier, private_key);
-    cout << "Cypher Text - DES Output" << endl;
-    for(int i = 0; i < 64; i++){
-        cout << arr[i] << " ";
-    }
-    cout << endl << endl;
-    char plainText[] = "private message.";
-    // cout << "Plain Text Message: " << plainText << endl;
-    //
-    //
-    // int mess[] = {1,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1};
-    // cout << convertToString(mess);
-
-
-
-    //Testing des_encrypt
-    int input2[] = {0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1};
-    int input3[] = {0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1};
-
-    arr = des_encrypt(input2, input3);
-
-    // for(int i = 0; i < 64; i++){
-    //     cout << arr[i] << " ";
-    // }
-    // cout << endl << endl;
-
-
-
-    //Testing XOR
-    int input4[] = {0,1,1,0};
-    int input5[] = {1,1,1,0};
-
-    arr = xor_helper(input4, input5, 4);
-
-    // for(int i = 0; i < 4; i++){
-    //     cout << arr[i] << " ";
-    // }
-    // cout << endl << endl;
-
+    string getMessageBack = xor8(xorResult, encryptedCode);
+    cout << getMessageBack << endl;
 
     return 0; //No error.
 }
