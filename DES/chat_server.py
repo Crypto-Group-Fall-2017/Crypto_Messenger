@@ -17,6 +17,13 @@ def broadcast_data(sock, message):
                 socket.close()
                 CONNECTION_LIST.remove(socket)
 
+def initial_session_key(port):
+    F = open('session_key_' + str(port), 'w+').close()
+    with open('session_key_' + str(port), 'w') as F:
+        F.write('11 ')
+        F.write('18446744073709551557')
+
+
 if __name__ == "__main__":
 
     #keep list of all sockets
