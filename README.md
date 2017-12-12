@@ -37,6 +37,7 @@ http://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm
 Python Chat Client:
 https://github.com/keyan/python-socket-chat
 https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa/
+https://stackoverflow.com/questions/4241415/import-c-function-into-python-program
 
 In-browser Websockets:
 https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
