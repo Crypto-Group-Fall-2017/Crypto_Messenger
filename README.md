@@ -31,12 +31,13 @@ Encryption Resources:
 https://en.wikipedia.org/wiki/Public-key_cryptography
 https://en.wikipedia.org/wiki/End-to-end_encryption
 
-Java DES Encryption:
-https://www.mkyong.com/java/jce-encryption-data-encryption-standard-des-tutorial/
+DES in C:
+http://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm
 
 Python Chat Client:
 https://github.com/keyan/python-socket-chat
 https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa/
+https://stackoverflow.com/questions/4241415/import-c-function-into-python-program
 
 In-browser Websockets:
 https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
@@ -47,3 +48,13 @@ Chatting through Websockets:
 https://spring.io/guides/gs/messaging-stomp-websocket/
 http://www.codingdevil.com/2014/02/simple-chat-application-using-java-socket-programming-2.html
 https://docs.oracle.com/javase/tutorial/networking/sockets/index.html
+
+How to run:
+To compile go to the directory the program was downloaded on, and use command make.
+To run the application use command ./MESS
+
+Our makefile creates object files for all our source files. Use make clean to remove them.
+
+The program will take in a message and encrypt it.
+
+
