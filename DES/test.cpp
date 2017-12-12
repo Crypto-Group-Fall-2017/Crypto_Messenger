@@ -27,6 +27,18 @@ string BinToAc(int array[64]){
     return output;
 }
 
+string xorMessage(string message, string code){
+    string output;
+    for(int i = 0 ; i < message.length(); i++){
+        output.push_back((uint8_t )message[i] ^ (uint8_t)code[i%8]);
+        //cout << (( (uint8_t) one[i] )^( (uint8_t) two[i] )) << " ";
+        //std::cout<<std::bitset<8>((( (uint8_t) one[i] )^( (uint8_t) two[i] )))<<std::endl;
+    }
+    // cout << endl;
+    return output;
+}
+
+
 string xor8(string one, string two){
     string output;
     for(int i = 0 ; i < 8; i++){
@@ -50,6 +62,14 @@ int* stringToBinary(string input){
     return arr;
 }
 
+string padWithZeros(string input){
+    int numToPad = input.length() % 8;
+    for (int i = 0; i < numToPad; i++) {
+        input += (char) 0;
+    }
+    return input;
+}
+
 
 int main(int argc, char const *argv[]) {
 
@@ -65,20 +85,15 @@ int main(int argc, char const *argv[]) {
     }
 
     string input;
-    string input2;
-    while(!inFile.eof()){
-        inFile >> input;
-        input2 += input + " ";
-    }
+    getline(inFile,input, '\n');
+    // cout << "test: "<< input << endl;
 
     inFile.close();
-
-    input2.resize(input2.length()-1);
 
     string encryptedCode = BinToAc(des_encrypt(stringToBinary(identifier),stringToBinary(key)));
     // cout << encryptedCode << endl;
 
-    string xorResult = xor8(input2,encryptedCode);
+    string xorResult = xorMessage((input),encryptedCode);
     // cout << xorResult << endl;
 
     string getMessageBack = xor8(xorResult, encryptedCode);

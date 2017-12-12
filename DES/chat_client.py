@@ -14,7 +14,7 @@ def pass_through_des(input):
     F.write(input)
     F.close()
     tmp=subprocess.call("./test")
-    time.sleep(.3)
+    time.sleep(.1)
     F = open('file.txt', 'r')
     input=F.read()
     F.close()
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                         sys.stdout.write((data))
                     else:
                         index = data.find('>')
-                        index += 1
+                        index += 2
                         data = data[index:]
                         sys.stdout.write(pass_through_des(data))
 
