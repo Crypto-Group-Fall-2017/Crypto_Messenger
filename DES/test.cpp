@@ -7,12 +7,29 @@
 #include <exception>
 #include <vector>
 #include <fstream>
+#include <cstdio>
 
 #include "des_exp_perm.h"
 #include "p_box.h"
 #include "des_main.h"
 
+#define DEBUG 1
+
 using namespace std;
+
+unsigned int getSessionKey(){
+    FILE *f;
+    unsigned int key;
+    f = fopen("session_key_8000", "r");
+    if (f != NULL){
+        fscanf(f, "%u", &key);
+        fclose(f);
+    }
+    if (DEBUG){
+        printf("\nThis is the key seen by des.cpp: %u\n", key);
+    }
+    return key;
+}
 
 string BinToAc(int array[64]){
     string output;
@@ -62,6 +79,21 @@ int* stringToBinary(string input){
     return arr;
 }
 
+int* intToBinary(unsigned int input){
+    int *arr = new int[64];
+    for (int i = 0; i < 64; i++){
+        arr[i] = (input >> 63 - i) & 1;
+    }
+    if (DEBUG){
+        printf("\nInteger Array Value of Key:\n");
+        for (int i = 0; i < 64; i++){
+            printf("%d", arr[i]);
+        }
+        printf("\n");
+    }
+    return arr;
+}
+
 string padWithZeros(string input){
     int numToPad = input.length() % 8;
     for (int i = 0; i < numToPad; i++) {
@@ -73,7 +105,7 @@ string padWithZeros(string input){
 
 int main(int argc, char const *argv[]) {
 
-    string key = "estoniar";
+    unsigned int key = getSessionKey();
     string identifier = "helphelp";
     string plainText = "private.";
 
@@ -90,7 +122,7 @@ int main(int argc, char const *argv[]) {
 
     inFile.close();
 
-    string encryptedCode = BinToAc(des_encrypt(stringToBinary(identifier),stringToBinary(key)));
+    string encryptedCode = BinToAc(des_encrypt(stringToBinary(identifier), intToBinary(key)));
     // cout << encryptedCode << endl;
 
     string xorResult = xorMessage((input),encryptedCode);
