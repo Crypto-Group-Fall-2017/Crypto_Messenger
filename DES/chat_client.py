@@ -79,10 +79,12 @@ if __name__ == "__main__":
                     else:
                         index = data.find('>')
                         index += 2
+                        thing = data[:index]
                         data = data[index:]
-                        sys.stdout.write(pass_through_des(data))
-
+                        sys.stdout.write(thing + pass_through_des(data))
                     prompt()
+
+
 
             else:
                 msg = sys.stdin.readline()

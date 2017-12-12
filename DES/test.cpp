@@ -8,25 +8,26 @@
 #include <vector>
 #include <fstream>
 #include <cstdio>
+// <inttypes.h>
 
 #include "des_exp_perm.h"
 #include "p_box.h"
 #include "des_main.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 using namespace std;
 
-unsigned int getSessionKey(){
+uint64_t getSessionKey(){
     FILE *f;
-    unsigned int key;
+    uint64_t key;
     f = fopen("session_key_8000", "r");
     if (f != NULL){
-        fscanf(f, "%u", &key);
+        fscanf(f, "%llu", &key);
         fclose(f);
     }
     if (DEBUG){
-        printf("\nThis is the key seen by des.cpp: %u\n", key);
+        printf("\nThis is the key seen by des.cpp: %llu\n", key);
     }
     return key;
 }
@@ -79,10 +80,10 @@ int* stringToBinary(string input){
     return arr;
 }
 
-int* intToBinary(unsigned int input){
+int* intToBinary(uint64_t input){
     int *arr = new int[64];
     for (int i = 0; i < 64; i++){
-        arr[i] = (input >> 63 - i) & 1;
+        arr[i] = (input >> (63 - i)) & 1;
     }
     if (DEBUG){
         printf("\nInteger Array Value of Key:\n");
@@ -105,7 +106,7 @@ string padWithZeros(string input){
 
 int main(int argc, char const *argv[]) {
 
-    unsigned int key = getSessionKey();
+    uint64_t key = getSessionKey();
     string identifier = "helphelp";
     string plainText = "private.";
 
