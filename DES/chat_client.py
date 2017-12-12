@@ -2,14 +2,15 @@
 #
 #
 
-import socket, sys, select, string, time, subprocess, secrets
+import socket, sys, select, string, time, subprocess
+from random import randint
 
 def prompt():
     sys.stdout.write('<You> ')
     sys.stdout.flush()
 
 def update_session_key(port):
-    client_sectret = secrets.randbelow(9999)
+    client_secret = randint(1,9999)
     with open('session_key_' + str(port), 'r') as F:
         session_key, session_modulo = [int(x) for x in next(F).split()]
     F = open('session_key_' + str(port), 'w').close()
@@ -17,14 +18,14 @@ def update_session_key(port):
     print session_key
     print '\nSession Modulo: '
     print session_modulo
-    session_key = (session_key ** client_sectret) % session_modulo
+    session_key = (session_key ** client_secret) % session_modulo
     with open('session_key_' + str(port), 'w') as F:
-        F.write(session_key + ' ')
-        F.write(session_modulo)
+        F.write(str(session_key) + ' ')
+        F.write(str(session_modulo))
     print '\nNew Session key: '
     print session_key
-    
-    
+
+
 def pass_through_des(input):
     F = open('file.txt', 'w').close()
     F = open('file.txt', 'w')

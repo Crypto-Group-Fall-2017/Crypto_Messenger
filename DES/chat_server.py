@@ -38,6 +38,7 @@ if __name__ == "__main__":
     CONNECTION_LIST.append(server_socket)
 
     print "Chat server started on port " + str(PORT)
+    initial_session_key(PORT)
 
     while True:
         read_sockets, write_sockets, error_sockets = select.select(CONNECTION_LIST, [], [])
